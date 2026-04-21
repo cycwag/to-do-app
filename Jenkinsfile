@@ -11,14 +11,13 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                bat 'docker-compose run --rm web pytest test_app.py -v'
+                bat 'docker-compose run --rm --no-deps web pytest test_app.py -v'
             }
         }
         stage('Deploy') {
             steps {
                 echo 'Deploying app...'
                 bat 'docker-compose down'
-                bat 'docker ps -q --filter "publish=5000" | findstr . && docker stop $(docker ps -q --filter "publish=5000") || echo no container on 5000'
                 bat 'docker-compose up -d'
             }
         }
