@@ -17,10 +17,10 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying app...'
-                bat 'docker-compose down'
+                bat 'docker-compose down -v --remove-orphans'
                 bat 'docker-compose up -d'
             }
-        }
+}
     }
 
     post {
