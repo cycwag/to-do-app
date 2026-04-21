@@ -14,10 +14,10 @@ def test_homepage_loads(client):
 def test_add_task(client):
     response = client.post('/add', data={
         'task': 'Test Task',
-        'jadwal': '2026-04-21T09:00'
+        'jadwal': '09:00'  # format TIME
     })
     assert response.status_code == 302
-
+    
 def test_format_jadwal():
     jadwal_raw = '2026-04-21T09:00'
     jadwal = jadwal_raw.replace('T', ' ') + ':00'
