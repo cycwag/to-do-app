@@ -18,6 +18,7 @@ pipeline {
             steps {
                 echo 'Deploying app...'
                 bat 'docker-compose down'
+                bat 'docker ps -q --filter "publish=5000" | findstr . && docker stop $(docker ps -q --filter "publish=5000") || echo no container on 5000'
                 bat 'docker-compose up -d'
             }
         }
