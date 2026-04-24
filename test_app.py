@@ -2,6 +2,7 @@ import pytest
 from unittest.mock import patch, MagicMock
 from app import app
 import os
+import pymysql
 
 DB_CONFIG = {
     'host': 'db',
