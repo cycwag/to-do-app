@@ -1,6 +1,15 @@
 import pytest
 from unittest.mock import patch, MagicMock
 from app import app
+import os
+
+DB_CONFIG = {
+    'host': 'db',
+    'user': 'root',
+    'password': os.environ.get('MYSQL_PASSWORD', 'password'),
+    'database': os.environ.get('MYSQL_DATABASE', 'tododb'),
+    'cursorclass': pymysql.cursors.DictCursor
+}
 
 @pytest.fixture
 def client():
