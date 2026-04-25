@@ -33,7 +33,18 @@
       <h1>Todo List</h1>
       <p>Atur jadwal kegiatan kamu</p>
     </div>
-
+        {% if error %}
+      <div style="
+          background: #2d1b1b;
+          border: 1px solid #e24b4a;
+          color: #e24b4a;
+          padding: 10px 16px;
+          border-radius: 8px;
+          margin-bottom: 16px;
+          font-size: 14px;">
+          ⚠️ {{ error }}
+      </div>
+      {% endif %}
     <div class="form-wrap">
       <form action="/add" method="POST">
         <div class="form-row">
