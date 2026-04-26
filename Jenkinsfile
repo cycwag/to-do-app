@@ -1,7 +1,7 @@
 pipeline {
     agent any
 
-     environment {
+    environment {
         EC2_IP = '16.79.142.118'
         EC2_USER = 'ubuntu'
     }
@@ -19,11 +19,14 @@ pipeline {
                 bat 'docker-compose run --rm --no-deps web pytest test_app.py -v'
             }
         }
-        stage('Deploy') {
+        stage('Deploy to EC2') {
             steps {
-                echo 'Deploying app...'
-                bat 'docker-compose down -v --remove-orphans'
-                bat 'docker-compose up -d'
+                echo 'Deploying to EC2...'
+                sshagent(['ec2-ssh-key']) {
+                    bat """
+                        ssh -o StrictHostKeyChecking=no %EC2_USER%@%EC2_IP% "cd /home/ubuntu/to-do-app && git pull origin main && docker compose down -v --remove-orphans && docker compose up -d --build"
+                    """
+                }
             }
         }
     }
@@ -37,7 +40,6 @@ pipeline {
                     <h2>Pipeline Gagal!</h2>
                     <p><b>Project:</b> ${env.JOB_NAME}</p>
                     <p><b>Build:</b> #${env.BUILD_NUMBER}</p>
-                    <p><b>Status:</b> FAILURE</p>
                     <p><b>Detail:</b> <a href="${env.BUILD_URL}">Klik di sini</a></p>
                 """,
                 to: 'cycwag3006@gmail.com',
@@ -45,14 +47,13 @@ pipeline {
             )
         }
         success {
-            echo 'Semua test lulus! App berhasil di-deploy.'
+            echo 'Semua test lulus! App berhasil di-deploy ke EC2.'
             emailext(
                 subject: "✅ Jenkins Build SUKSES - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                 body: """
                     <h2>Pipeline Berhasil!</h2>
                     <p><b>Project:</b> ${env.JOB_NAME}</p>
                     <p><b>Build:</b> #${env.BUILD_NUMBER}</p>
-                    <p><b>Status:</b> SUCCESS</p>
                     <p><b>Detail:</b> <a href="${env.BUILD_URL}">Klik di sini</a></p>
                 """,
                 to: 'cycwag3006@gmail.com',
