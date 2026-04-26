@@ -22,11 +22,9 @@ pipeline {
         stage('Deploy to EC2') {
             steps {
                 echo 'Deploying to EC2...'
-                sshagent(['ec2-ssh-key']) {
-                    bat """
-                        ssh -o StrictHostKeyChecking=no %EC2_USER%@%EC2_IP% "cd /home/ubuntu/to-do-app && git pull origin main && docker compose down -v --remove-orphans && docker compose up -d --build"
-                    """
-                }
+                bat """
+                    ssh -i "C:\\Users\\denny\\Downloads\\to-do-app.pem" -o StrictHostKeyChecking=no ubuntu@16.79.142.118 "cd /home/ubuntu/to-do-app && git pull origin main && docker compose down -v --remove-orphans && docker compose up -d --build"
+                """
             }
         }
     }
