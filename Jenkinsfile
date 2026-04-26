@@ -23,9 +23,10 @@ pipeline {
             steps {
                 echo 'Deploying app...'
                 bat 'docker-compose down -v --remove-orphans'
+                bat 'for /f "tokens=5" %%a in (\'netstat -aon ^| findstr :5001 ^| findstr LISTENING\') do taskkill /F /PID %%a & exit /b 0'
                 bat 'docker-compose up -d'
             }
-        }
+}
     }
 
     post {
