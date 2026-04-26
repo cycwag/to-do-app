@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+     environment {
+        EC2_IP = '16.79.142.118'
+        EC2_USER = 'ubuntu'
+    }
+
     stages {
         stage('Build') {
             steps {
