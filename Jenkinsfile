@@ -23,7 +23,7 @@ pipeline {
             steps {
                 echo 'Deploying to EC2...'
               bat """
-                        ssh -i "C:\\Program Files\\Jenkins\\to-do-app.pem" -o StrictHostKeyChecking=no ubuntu@16.79.142.118 "cd /home/ubuntu/to-do-app && git pull origin main && docker compose down -v --remove-orphans && docker compose up -d --build"
+                        ssh -i "C:\\Program Files\\Jenkins\\to-do-app.pem" -o StrictHostKeyChecking=no ubuntu@16.79.142.118 "cd /home/ubuntu/to-do-app && git pull origin main && docker compose down -v && docker compose up -d --build"
                     """
             }
         }
